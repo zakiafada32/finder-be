@@ -23,6 +23,7 @@
   "dependencies": {
     "@types/uuid": "^8.3.1",
     "aws-cdk-lib": "2.0.0-rc.15",
+    "aws-sdk": "^2.957.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.16",
     "uuid": "^8.3.2"
