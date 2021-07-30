@@ -1,3 +1,9 @@
-import { handler } from '../services/node-lambda/hello';
+import { handler } from '../services/finder-table/create';
 
-handler({}, {});
+const event = {
+  body: {
+    location: 'Indonesia',
+  },
+};
+
+handler(event as any, {} as any);
