@@ -2,11 +2,12 @@ import { DynamoDB } from 'aws-sdk';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import { v4 } from 'uuid';
 
-const dbClient = new DynamoDB.DocumentClient();
-
 interface ItemData {
   spaceId: string;
 }
+
+const dbClient = new DynamoDB.DocumentClient();
+const TABLE_NAME = process.env.TABLE_NAME;
 
 async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
   const result: APIGatewayProxyResult = {
@@ -20,7 +21,7 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
   try {
     await dbClient
       .put({
-        TableName: 'FinderTable',
+        TableName: TABLE_NAME!,
         Item: item,
       })
       .promise();

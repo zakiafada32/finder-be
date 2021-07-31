@@ -1,4 +1,4 @@
-import { handler } from '../services/finder-table/create';
+import { handler } from '../services/SpaceTable/Create';
 
 const event = {
   body: {

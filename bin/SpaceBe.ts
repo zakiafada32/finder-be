@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { FinderBeStack } from '../lib/finder-be-stack';
+import { SpaceBeStack } from '../lib/SpaceBeStack';
 
 const app = new cdk.App();
-new FinderBeStack(app, 'FinderBeStack', {
+new SpaceBeStack(app, 'SpaceBeStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
@@ -15,5 +15,5 @@ new FinderBeStack(app, 'FinderBeStack', {
    * want to deploy the stack to. */
   // env: { account: '123456789012', region: 'us-east-1' },
   /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-  stackName: 'FinderBe',
+  stackName: 'SpaceBe',
 });

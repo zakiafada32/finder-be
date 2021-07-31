@@ -1,8 +1,8 @@
 {
-  "name": "finder-be",
+  "name": "space-be",
   "version": "0.1.0",
   "bin": {
-    "finder-be": "bin/finder-be.js"
+    "SpaceBe": "bin/SpaceBe.ts"
   },
   "scripts": {
     "build": "tsc",
