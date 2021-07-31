@@ -1,13 +1,12 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../services/SpaceTable/Read';
+import { handler } from '../services/SpaceTable/Delete';
 
 const event: APIGatewayProxyEvent = {
   queryStringParameters: {
-    location: 'Tuban',
+    spaceId: '737e179b-5d96-494b-a569-dd691ffc913e',
   },
 } as any;
 
 handler(event as any, {} as any).then((apiResult) => {
-  const item = JSON.parse(apiResult.body);
   console.log('123');
 });
