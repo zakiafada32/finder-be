@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
-import { handler } from '../services/SpaceTable/Create';
+import { handler } from '../../services/SpaceTable/Create';
 
 const event: APIGatewayProxyEvent = {
   body: {

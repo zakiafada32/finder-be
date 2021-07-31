@@ -9,8 +9,7 @@
       "request": "launch",
       "name": "Debug local file",
       "runtimeArgs": ["-r", "ts-node/register"],
-      // "args": ["${relativeFile}"],
-      "program": "${workspaceFolder}/debug/index.ts",
+      "args": ["${relativeFile}"],
       "env": {
         "AWS_REGION": "ap-southeast-1",
         "TABLE_NAME": "SpaceTable",
