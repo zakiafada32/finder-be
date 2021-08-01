@@ -8,3 +8,5 @@ node_modules
 cdk.out
 
 request.http
+
+note.txt

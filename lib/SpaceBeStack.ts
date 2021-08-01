@@ -1,12 +1,14 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { join } from 'path';
-import { LambdaIntegration, RestApi } from 'aws-cdk-lib/lib/aws-apigateway';
+import { AuthorizationType, LambdaIntegration, MethodOptions, RestApi } from 'aws-cdk-lib/lib/aws-apigateway';
 import { GenericTable } from './GenericTable';
 import { NodejsFunction } from 'aws-cdk-lib/lib/aws-lambda-nodejs';
 import { PolicyStatement } from 'aws-cdk-lib/lib/aws-iam';
+import { AuthorizerWrapper } from './auth/AuthorizerWrapper';
 
 export class SpaceBeStack extends Stack {
+  private authorizer: AuthorizerWrapper;
   private api = new RestApi(this, 'SpaceApi');
   private spaceTable = new GenericTable(this, {
     tableName: 'SpaceTable',
@@ -21,6 +23,7 @@ export class SpaceBeStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     // The code that defines your stack goes here
+    this.authorizer = new AuthorizerWrapper(this, this.api);
 
     const helloLambdaNodeJs = new NodejsFunction(this, 'helloLambdaNodeJs', {
       entry: join(__dirname, '..', 'services', 'nodeLambda', 'hello.ts'),
@@ -32,9 +35,16 @@ export class SpaceBeStack extends Stack {
     s3ListPolicy.addResources('*');
     helloLambdaNodeJs.addToRolePolicy(s3ListPolicy);
 
+    const optionWithAuthorizer: MethodOptions = {
+      authorizationType: AuthorizationType.COGNITO,
+      authorizer: {
+        authorizerId: this.authorizer.authorizer.authorizerId,
+      },
+    };
+
     const helloLambdaIntegration = new LambdaIntegration(helloLambdaNodeJs);
     const helloLambdaResource = this.api.root.addResource('hello');
-    helloLambdaResource.addMethod('GET', helloLambdaIntegration);
+    helloLambdaResource.addMethod('GET', helloLambdaIntegration, optionWithAuthorizer);
 
     // space api integration
     const spaceResource = this.api.root.addResource('spaces');

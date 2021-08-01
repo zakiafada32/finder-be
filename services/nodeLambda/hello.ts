@@ -1,21 +1,29 @@
-import { v4 } from 'uuid';
+import { APIGatewayProxyEvent } from 'aws-lambda';
 import { S3 } from 'aws-sdk';
 
 const s3Client = new S3();
 
-async function handler(event: any, context: any) {
-  console.log('event log:');
-  console.log(event);
+async function handler(event: APIGatewayProxyEvent, context: any) {
+  if (isAuthorized(event)) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify('You are authorized'),
+    };
+  } else {
+    return {
+      statusCode: 401,
+      body: JSON.stringify('You are NOT authorized'),
+    };
+  }
+}
 
-  console.log('context log:');
-  console.log(context);
-
-  const buckets = await s3Client.listBuckets().promise();
-
-  return {
-    statusCode: 200,
-    body: 'Hello from lambda: ' + JSON.stringify(buckets.Buckets),
-  };
+function isAuthorized(event: APIGatewayProxyEvent): boolean {
+  const group = event.requestContext.authorizer?.claims['cognito:groups'];
+  if (group) {
+    return (group as string).includes('admins');
+  } else {
+    return false;
+  }
 }
 
 export { handler };
